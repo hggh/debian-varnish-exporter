@@ -1,0 +1,19 @@
+clone:
+  git:
+    image: plugins/git
+    volumes:
+      - /var/repos/${DRONE_REPO_OWNER}/${DRONE_REPO_NAME}:/drone/src/github.com/${DRONE_REPO_OWNER}/${DRONE_REPO_NAME}
+pipeline:
+  package:
+    image: ubuntu:18.04
+    commands:
+      - apt-get update
+      - apt-get install -y wget ruby ruby-dev build-essential
+      - gem install fpm
+      - ./builder
+      - ls
+      - rm -f *.deb
+    volumes:
+      - /var/repos/${DRONE_REPO_OWNER}/${DRONE_REPO_NAME}:/drone/src/github.com/${DRONE_REPO_OWNER}/${DRONE_REPO_NAME}
+    when:
+      event: push

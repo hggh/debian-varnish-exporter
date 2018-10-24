@@ -1,0 +1,6 @@
+VERSION=1.4.1
+DEB_VERSION=1
+PACKAGE_NAME=varnish-exporter
+PROGRAM_NAME=varnish_exporter
+UPSTREAM_NAME=prometheus_varnish_exporter
+URL=https://github.com/jonnenauha/prometheus_varnish_exporter/releases/download/${VERSION}/prometheus_varnish_exporter-${VERSION}.linux-amd64.tar.gz

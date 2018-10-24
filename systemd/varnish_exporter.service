@@ -1,0 +1,9 @@
+[Unit]
+Description=Varnish Exporter
+
+[Service]
+EnvironmentFile=/etc/default/varnish_exporter
+ExecStart=/usr/bin/varnish_exporter $OPTIONS
+
+[Install]
+WantedBy=multi-user.target
