@@ -18,3 +18,9 @@ fpm --deb-default systemd/${PROGRAM_NAME} \
   -s dir -t deb -n $PACKAGE_NAME \
   -v $VERSION-${DEB_VERSION} \
   build/${UPSTREAM_NAME}-${VERSION}.linux-amd64/${UPSTREAM_NAME}=usr/bin/${PROGRAM_NAME} ${EXTRA_INSTALL_DIRS}
+
+deb-s3 upload --arch=${ARCH} \
+  --bucket=${S3_BUCKET} \
+  --codename=${CODENAME} \
+  --s3-region=${S3_REGION} \
+  --sign=${REPO_KEY_ID} ${PACKAGE_NAME}*.deb

@@ -10,10 +10,20 @@ pipeline:
       - apt-get update
       - apt-get install -y wget ruby ruby-dev build-essential
       - gem install fpm
+      - gem install deb-s3
+      - echo "$DEBIAN_REPO_GPG_KEY" | gpg --import
+      - mkdir ~/.aws
+      - echo "[default]" >> ~/.aws/credentials
+      - echo "aws_access_key_id = $DEBIAN_S3_ACCESS_KEY" >> ~/.aws/credentials
+      - echo "aws_secret_access_key = $DEBIAN_S3_SECRET_KEY" >> ~/.aws/credentials
       - ./builder
       - ls
       - rm -f *.deb
     volumes:
       - /var/repos/${DRONE_REPO_OWNER}/${DRONE_REPO_NAME}:/drone/src/github.com/${DRONE_REPO_OWNER}/${DRONE_REPO_NAME}
+    secrets:
+      - DEBIAN_REPO_GPG_KEY
+      - DEBIAN_S3_ACCESS_KEY
+      - DEBIAN_S3_SECRET_KEY
     when:
       event: push
