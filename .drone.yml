@@ -10,9 +10,40 @@ clone:
   depth: 1
 
 steps:
-  - name: package
-    image: ubuntu:18.04
+  - name: package for focal
+    image: ubuntu:20.04
     commands:
+      - export DEBIAN_FRONTEND=noninteractive
+      - export CODENAME=focal
+      - apt-get update
+      - apt-get install -y gnupg
+      - echo "$DEBIAN_REPO_GPG_KEY" | gpg --import
+      - mkdir ~/.aws
+      - echo "[default]" >> ~/.aws/credentials
+      - echo "aws_access_key_id = $DEBIAN_S3_ACCESS_KEY" >> ~/.aws/credentials
+      - echo "aws_secret_access_key = $DEBIAN_S3_SECRET_KEY" >> ~/.aws/credentials
+      - apt-get install -y wget ruby ruby-dev build-essential
+      - gem install fpm
+      - gem install deb-s3
+      - ./builder
+      - ls
+      - rm -f *.deb
+    environment:
+      DEBIAN_REPO_GPG_KEY:
+        from_secret: DEBIAN_REPO_GPG_KEY
+      DEBIAN_S3_ACCESS_KEY:
+        from_secret: DEBIAN_S3_ACCESS_KEY
+      DEBIAN_S3_SECRET_KEY:
+        from_secret: DEBIAN_S3_SECRET_KEY
+    when:
+      event:
+        - push
+
+  - name: package for jammy
+    image: ubuntu:20.04
+    commands:
+      - export DEBIAN_FRONTEND=noninteractive
+      - export CODENAME=jammy
       - apt-get update
       - apt-get install -y gnupg
       - echo "$DEBIAN_REPO_GPG_KEY" | gpg --import

@@ -1,4 +1,4 @@
-VERSION=1.5.2
+VERSION=1.6.1
 DEB_VERSION=1
 PACKAGE_NAME=varnish-exporter
 PROGRAM_NAME=varnish_exporter
@@ -8,6 +8,6 @@ URL=https://github.com/jonnenauha/prometheus_varnish_exporter/releases/download/
 
 S3_REGION=eu-central-1
 S3_BUCKET=debian-repo.scireum.com
-CODENAME=bionic
+CODENAME=${CODENAME-focal}
 ARCH=amd64
 REPO_KEY_ID=5698D140EB4A016F989E9EAB690D0D033D12C2EC
